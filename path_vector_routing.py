@@ -6,6 +6,7 @@
 # More information about this algorithm at Behrouz A. Forouzan,
 #   Data Communications and Networking 5ht Edition, page 610
 
+
 # Structure for Nodes which consist the data of names, neighbour nodes, and reachable paths
 class Node:
     def __init__(self, name, neighbours):
@@ -37,6 +38,7 @@ class Node:
     def path(self, value):
         self._paths = value
 
+
 # Initialization for reachable paths for each Node
 def initialization(N, node):
     for y in range(N):
@@ -52,6 +54,7 @@ def initialization(N, node):
             s.append("")
             node._paths.append(s)
 
+
 def print_tree(tree):
     for node in tree:
         print("node name: {}".format(node._name))
@@ -62,7 +65,6 @@ def print_tree(tree):
 
 # Define main function
 def main():
-
     # Prompt user to input # of nodes on the tree and check for error input
     while True:
         try:
@@ -71,18 +73,16 @@ def main():
         except ValueError:
             print("Ops! That is no valid number! Try again...!")
     # If the input is 0 meaning there is no node on the tree, the program exit
-    if(N == 0):
+    if N == 0:
         print("Thank you!")
         pass
     else:
-        tree = [] # Create a tree
+        tree = []  # Create a tree
         # Build the tree by prompt user input
         for i in range(N):
             s = input("Input neighbor nodes of node number {0!s}, "
                       "separately by a space: ".format(i)).split(" ")
-            tree.append(Node(i, s)) # Add nodes to the tree
+            tree.append(Node(i, s))  # Add nodes to the tree
             initialization(N, tree[i])
-
-
 
 main()
