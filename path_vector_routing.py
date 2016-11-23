@@ -31,11 +31,11 @@ class Node:
         self._neighbours = value
 
     @property
-    def path(self):
+    def paths(self):
         return self._paths
 
-    @path.setter
-    def path(self, value):
+    @paths.setter
+    def paths(self, value):
         self._paths = value
 
 
@@ -54,17 +54,54 @@ def initialization(N, node):
             s.append("")
             node._paths.append(s)
 
+# Update the path from a node to it neighbour
+def update(node, neighbour):
+    path_ys = neighbour._paths
+    path_ws = node._paths
+    for i in range(len(path_ys)):
+        neighbour.paths[i] = best(path_ys[i], path_ws[i], neighbour)
+    return neighbour.paths
 
+# Check if a node has not reach all the nodes
+def check(node):
+    for i in range(len(node.paths)):
+        if str(node.paths[i][-1]) != str(i):
+            return True
+    return False
+
+# Find the better path to other nodes for a neighbour node
+def best(path_y, path_w, neighbour):
+    if path_w == ['']:
+        return path_y
+    else:
+        path_new_w = []
+        path_new_w.append(neighbour._name)
+        for item in path_w:
+            path_new_w.append(item)
+        if neighbour.name in path_w:
+            return path_y
+        elif path_y == ['']:
+            neighbour._changed = True
+            return path_new_w
+        elif len(path_new_w) < len(path_y):
+            neighbour._changed = True
+            return path_new_w
+        else:
+            return path_y
+
+
+# Print the tree
 def print_tree(tree):
+    print("\nThe list of nodes, their neighbours and theirs reachable paths:")
     for node in tree:
-        print("node name: {}".format(node._name))
+        print("\nnode name: {}".format(node._name))
         print("node neighbours: {}".format(node._neighbours))
         print("node paths: {}".format(node._paths))
-        print("\n\n")
 
 
 # Define main function
 def main():
+
     # Prompt user to input # of nodes on the tree and check for error input
     while True:
         try:
@@ -83,6 +120,17 @@ def main():
             s = input("Input neighbor nodes of node number {0!s}, "
                       "separately by a space: ".format(i)).split(" ")
             tree.append(Node(i, s))  # Add nodes to the tree
-            initialization(N, tree[i])
+            initialization(N, tree[i])  # Initializing reachable paths for each node of the tree
+        #Update paths in the tree
+        for item in tree:
+                for i in item.neighbours:
+                    tree[int(i)].paths = update(item, tree[int(i)])
+        for item in tree:
+            if check(item):
+                for i in item.neighbours:
+                    item.paths = update(tree[int(i)], item)
+        print_tree(tree)
 
+
+# Call main()
 main()
