@@ -63,8 +63,15 @@ def update(node, neighbour, tree):
         origin.append(item)
     for i in range(len(path_ys)):
         neighbour._paths[i] = best(path_ys[i], path_ws[i], neighbour)
+    print(neighbour.name)
+    print(origin)
+    print(neighbour._paths)
+
     if neighbour._paths != origin:
+        print("true")
         for i in neighbour._neighbours:
+            print(neighbour.name)
+            print(tree[int(i)].name)
             update(neighbour, tree[int(i)], tree)
     return tree
 
