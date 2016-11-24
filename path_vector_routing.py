@@ -55,18 +55,29 @@ def initialization(N, node):
             node._paths.append(s)
 
 # Update the path from a node to it neighbour
-def update(node, neighbour):
+def update(node, neighbour, tree):
     path_ys = neighbour._paths
     path_ws = node._paths
+    origin = []
+    for item in neighbour._paths:
+        origin.append(item)
     for i in range(len(path_ys)):
-        neighbour.paths[i] = best(path_ys[i], path_ws[i], neighbour)
-    return neighbour.paths
+        neighbour._paths[i] = best(path_ys[i], path_ws[i], neighbour)
+    if neighbour._paths != origin:
+        for i in neighbour._neighbours:
+            update(neighbour, tree[int(i)], tree)
+    return tree
 
 # Check if a node has not reach all the nodes
 def check(node):
+    print(node.paths)
     for i in range(len(node.paths)):
+        print(node.paths[i][-1])
+        print(i)
         if str(node.paths[i][-1]) != str(i):
+            print("True")
             return True
+    print("False")
     return False
 
 # Find the better path to other nodes for a neighbour node
@@ -121,16 +132,20 @@ def main():
                       "separately by a space: ".format(i)).split(" ")
             tree.append(Node(i, s))  # Add nodes to the tree
             initialization(N, tree[i])  # Initializing reachable paths for each node of the tree
+
         #Update paths in the tree
         for item in tree:
                 for i in item.neighbours:
-                    tree[int(i)].paths = update(item, tree[int(i)])
+                    tree = update(item, tree[int(i)],tree)
+        print_tree(tree)
+                    #tree[int(i)].paths = update(item, tree[int(i)])
+        '''
         for item in tree:
-            if check(item):
+            while check(item):
                 for i in item.neighbours:
                     item.paths = update(tree[int(i)], item)
         print_tree(tree)
-
+        '''
 
 # Call main()
 main()
