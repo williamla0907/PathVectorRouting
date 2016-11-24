@@ -3,9 +3,17 @@
 # This program requires python 3.5.x to compile.
 # This is an implementation for path vector routing algorithm popularly used
 #   to create paths for data transmission by Internet Service Providers.
+# The program will create paths to reachable points from every node on an internet
 # More information about this algorithm at Behrouz A. Forouzan,
 #   Data Communications and Networking 5ht Edition, page 610
-
+# Test case: An interconnection with 8 nodes named from 1 to 7, 6 and 7 are private and disconnected from
+#            the rest
+# To test: the command line will asked for the number of nodes on the tree, and follow by asking
+#           each node's neighbors.
+#           For example: When asked for neighbors of node 3, type in 2 4 5, then press enter
+#                  0--1--2--3--4    6
+#                         \ | /     |
+#                           5       7
 
 # Structure for Nodes which consist the data of names, neighbour nodes, and reachable paths
 class Node:
